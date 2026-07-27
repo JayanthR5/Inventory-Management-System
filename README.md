@@ -82,6 +82,53 @@ A premium, state-of-the-art Inventory Management System built with the MERN stac
 
 ---
 
+## Functional Requirements:
+
+1. User Authentication and Authorization 
+2. Product Management 
+3. Inventory Tracking 
+4. Category Management 
+5. Search and Filter Functionality 
+6. Dashboard and Analytics
+
+## Non-Functional Requirements: 
+
+1. Performance and Scalability 
+2. Security and Reliability 
+3. Availability and Usability 
+4. Data integrity and Backup 
+5. Compatibility
+
+##   Methodology 
+
+1. The user logs into the system and enters inventory details. 
+2. The backend validates the data and stores it securely in MongoDB. 
+3. The system processes stock movements and generates analytics. 
+4. The frontend dashboard displays inventory reports and stock information.
+
+## Result
+
+1.DASHBOARD 
+
+<img width="497" height="224" alt="image" src="https://github.com/user-attachments/assets/615758df-2946-4171-b45e-e7e4034655b2" />
+
+2.PRODUCTS 
+
+<img width="520" height="265" alt="image" src="https://github.com/user-attachments/assets/9da801f4-b32e-4bd4-9768-c79e9ca419fa" />
+
+3.Reports
+
+<img width="473" height="268" alt="image" src="https://github.com/user-attachments/assets/c3ccd582-2cab-4529-8839-d096586bf80e" />
+
+4.  DATABASES (MongoDb)
+
+   <img width="486" height="248" alt="image" src="https://github.com/user-attachments/assets/7242c9f8-7761-461a-81f6-c630515d7b1f" />
+
+
+
+
+   
+
 ## 📜 Documentation
 
 - [Root Overview](./README.md)
