@@ -93,9 +93,7 @@ A premium, state-of-the-art Inventory Management System built with the MERN stac
 
 
 
-## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
