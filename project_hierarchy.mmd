@@ -1,0 +1,96 @@
+graph TD
+  root[stock_market]
+  root --> FILE1[PROJECT_FULL_EXPLANATION.md]
+  root --> FILE2[PROJECT_QUICK_EXPLANATION.md]
+  root --> FILE3[README.md]
+  root --> FILE4[RUN_SERVICES.md]
+  root --> backend[backend]
+  root --> frontend[frontend]
+
+  subgraph backend [backend]
+    b_pkg[package.json]
+    b_readme[README.md]
+    b_server[server.js]
+    b_cont[controllers]
+    b_mid[middlewares]
+    b_mod[models]
+    b_routes[routes]
+    b_utils[utils]
+  end
+
+  b_cont --> bc1[ExportController.js]
+  b_cont --> bc2[ProductController.js]
+  b_cont --> bc3[ReportController.js]
+  b_cont --> bc4[UserController.js]
+
+  b_mid --> bm1[AdminMiddleware.js]
+  b_mid --> bm2[GlobalErrorHandler.js]
+  b_mid --> bm3[ProtectRouters.js]
+
+  b_mod --> bm4[ProductModel.js]
+  b_mod --> bm5[StockHistoryModel.js]
+  b_mod --> bm6[UserModel.js]
+
+  b_routes --> br1[ExportRouter.js]
+  b_routes --> br2[ProductRouter.js]
+  b_routes --> br3[ReportRouter.js]
+  b_routes --> br4[StockRouter.js]
+  b_routes --> br5[UserRouter.js]
+
+  b_utils --> bu1[AsyncHandler.js]
+  b_utils --> bu2[sendEmail.js]
+
+  subgraph frontend [frontend]
+    f_pkg[package.json]
+    f_readme[README.md]
+    f_index[index.html]
+    f_vite[vite.config.js]
+    f_public[public]
+    f_src[src]
+  end
+
+  f_src --> fs_App[App.jsx]
+  f_src --> fs_main[main.jsx]
+  f_src --> fs_assets[assets]
+  f_src --> fs_components[components]
+  f_src --> fs_context[context]
+  f_src --> fs_pages[pages]
+  f_src --> fs_services[services]
+
+  fs_components --> c1[ProtectedRoute.jsx]
+  fs_components --> c_common[common]
+  fs_components --> c_layout[layout]
+  fs_components --> c_products[products]
+  fs_components --> c_stock[stock]
+
+  c_common --> cc1[Button.jsx]
+  c_common --> cc2[ErrorBoundary.jsx]
+  c_common --> cc3[Input.jsx]
+  c_common --> cc4[Skeleton.jsx]
+
+  c_layout --> cl1[DashboardLayout.jsx]
+  c_layout --> cl2[Navbar.jsx]
+  c_layout --> cl3[Sidebar.jsx]
+
+  c_products --> cp1[ProductModal.jsx]
+  c_stock --> cs1[StockModal.jsx]
+
+  fs_context --> ctx1[AuthContext.jsx]
+
+  fs_pages --> p1[Dashboard.jsx]
+  fs_pages --> p2[ForgotPassword.jsx]
+  fs_pages --> p3[Login.jsx]
+  fs_pages --> p4[LowStock.jsx]
+  fs_pages --> p5[Products.jsx]
+  fs_pages --> p6[Register.jsx]
+  fs_pages --> p7[Reports.jsx]
+  fs_pages --> p8[ResetPassword.jsx]
+  fs_pages --> p9[StockIn.jsx]
+  fs_pages --> p10[StockOut.jsx]
+  fs_pages --> p11[StockPages.jsx]
+
+  fs_services --> s1[api.js]
+  fs_services --> s2[authService.js]
+  fs_services --> s3[productService.js]
+  fs_services --> s4[reportService.js]
+  fs_services --> s5[stockService.js]

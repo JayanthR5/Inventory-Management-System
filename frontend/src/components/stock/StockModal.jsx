@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { X, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 
 import Input from '../common/Input';
 import Button from '../common/Button';
 import stockService from '../../services/stockService';
 import productService from '../../services/productService';
+
+const MotionDiv = motion.div;
 
 const schema = yup.object({
   productId: yup.string().required('Product is required'),
@@ -19,7 +21,7 @@ const schema = yup.object({
 
 const StockModal = ({ isOpen, onClose, type = 'IN', onSuccess }) => { // type: 'IN' | 'OUT'
   const [products, setProducts] = useState([]);
-  const { register, handleSubmit, reset, control, formState: { errors, isSubmitting } } = useForm({
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm({
     resolver: yupResolver(schema)
   });
 
@@ -29,7 +31,7 @@ const StockModal = ({ isOpen, onClose, type = 'IN', onSuccess }) => { // type: '
         try {
           const data = await productService.getAll();
           setProducts(data);
-        } catch (error) {
+        } catch {
           toast.error('Failed to load products');
         }
       };
@@ -61,14 +63,14 @@ const StockModal = ({ isOpen, onClose, type = 'IN', onSuccess }) => { // type: '
     <AnimatePresence>
       {isOpen && (
         <>
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40"
           />
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -142,7 +144,7 @@ const StockModal = ({ isOpen, onClose, type = 'IN', onSuccess }) => { // type: '
                 </div>
               </form>
             </div>
-          </motion.div>
+          </MotionDiv>
         </>
       )}
     </AnimatePresence>

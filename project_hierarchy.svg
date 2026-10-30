@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600">
+  <rect fill="#ffffff" width="100%" height="100%"/>
+  <foreignObject x="10" y="10" width="1180" height="1580">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <pre style="font-family: monospace; font-size:12px; white-space:pre-wrap;">graph TD
+  root[stock_market]
+  root --&gt; FILE1[PROJECT_FULL_EXPLANATION.md]
+  root --&gt; FILE2[PROJECT_QUICK_EXPLANATION.md]
+  root --&gt; FILE3[README.md]
+  root --&gt; FILE4[RUN_SERVICES.md]
+  root --&gt; backend[backend]
+  root --&gt; frontend[frontend]
+
+  subgraph backend [backend]
+    b_pkg[package.json]
+    b_readme[README.md]
+    b_server[server.js]
+    b_cont[controllers]
+    b_mid[middlewares]
+    b_mod[models]
+    b_routes[routes]
+    b_utils[utils]
+  end
+
+  b_cont --&gt; bc1[ExportController.js]
+  b_cont --&gt; bc2[ProductController.js]
+  b_cont --&gt; bc3[ReportController.js]
+  b_cont --&gt; bc4[UserController.js]
+
+  b_mid --&gt; bm1[AdminMiddleware.js]
+  b_mid --&gt; bm2[GlobalErrorHandler.js]
+  b_mid --&gt; bm3[ProtectRouters.js]
+
+  b_mod --&gt; bm4[ProductModel.js]
+  b_mod --&gt; bm5[StockHistoryModel.js]
+  b_mod --&gt; bm6[UserModel.js]
+
+  b_routes --&gt; br1[ExportRouter.js]
+  b_routes --&gt; br2[ProductRouter.js]
+  b_routes --&gt; br3[ReportRouter.js]
+  b_routes --&gt; br4[StockRouter.js]
+  b_routes --&gt; br5[UserRouter.js]
+
+  b_utils --&gt; bu1[AsyncHandler.js]
+  b_utils --&gt; bu2[sendEmail.js]
+
+  subgraph frontend [frontend]
+    f_pkg[package.json]
+    f_readme[README.md]
+    f_index[index.html]
+    f_vite[vite.config.js]
+    f_public[public]
+    f_src[src]
+  end
+
+  f_src --&gt; fs_App[App.jsx]
+  f_src --&gt; fs_main[main.jsx]
+  f_src --&gt; fs_assets[assets]
+  f_src --&gt; fs_components[components]
+  f_src --&gt; fs_context[context]
+  f_src --&gt; fs_pages[pages]
+  f_src --&gt; fs_services[services]
+
+  fs_components --&gt; c1[ProtectedRoute.jsx]
+  fs_components --&gt; c_common[common]
+  fs_components --&gt; c_layout[layout]
+  fs_components --&gt; c_products[products]
+  fs_components --&gt; c_stock[stock]
+
+  c_common --&gt; cc1[Button.jsx]
+  c_common --&gt; cc2[ErrorBoundary.jsx]
+  c_common --&gt; cc3[Input.jsx]
+  c_common --&gt; cc4[Skeleton.jsx]
+
+  c_layout --&gt; cl1[DashboardLayout.jsx]
+  c_layout --&gt; cl2[Navbar.jsx]
+  c_layout --&gt; cl3[Sidebar.jsx]
+
+  c_products --&gt; cp1[ProductModal.jsx]
+  c_stock --&gt; cs1[StockModal.jsx]
+
+  fs_context --&gt; ctx1[AuthContext.jsx]
+
+  fs_pages --&gt; p1[Dashboard.jsx]
+  fs_pages --&gt; p2[ForgotPassword.jsx]
+  fs_pages --&gt; p3[Login.jsx]
+  fs_pages --&gt; p4[LowStock.jsx]
+  fs_pages --&gt; p5[Products.jsx]
+  fs_pages --&gt; p6[Register.jsx]
+  fs_pages --&gt; p7[Reports.jsx]
+  fs_pages --&gt; p8[ResetPassword.jsx]
+  fs_pages --&gt; p9[StockIn.jsx]
+  fs_pages --&gt; p10[StockOut.jsx]
+  fs_pages --&gt; p11[StockPages.jsx]
+
+  fs_services --&gt; s1[api.js]
+  fs_services --&gt; s2[authService.js]
+  fs_services --&gt; s3[productService.js]
+  fs_services --&gt; s4[reportService.js]
+  fs_services --&gt; s5[stockService.js]
+</pre>
+    </div>
+  </foreignObject>
+</svg>

@@ -5,8 +5,6 @@ import Button from '../components/common/Button';
 import { ArrowUpCircle, TrendingUp } from 'lucide-react';
 
 const StockIn = () => {
-    const [isAppearing, setIsAppearing] = useState(false); // To trigger animations if needed
-
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

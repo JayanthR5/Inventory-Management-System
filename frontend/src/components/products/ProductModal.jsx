@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 
 import Input from '../common/Input';
 import Button from '../common/Button';
 import productService from '../../services/productService';
 
+const MotionDiv = motion.div;
+
 const schema = yup.object({
   name: yup.string().required('Product name is required'),
   sku: yup.string().required('SKU is required'),
   category: yup.string().required('Category is required'),
   quantity: yup.number().typeError('Quantity must be a number').min(0, 'Min 0').required('Quantity is required'),
+  minStock: yup.number().typeError('Minimum stock must be a number').min(0, 'Min 0').required('Minimum stock is required'),
   price: yup.number().typeError('Price must be a number').min(0, 'Min 0').required('Price is required'),
   description: yup.string(),
   supplier: yup.string(),
@@ -28,7 +31,7 @@ const ProductModal = ({ isOpen, onClose, productToEdit, onSuccess }) => {
   useEffect(() => {
     if (productToEdit) {
       // Set values for edit mode
-      const fields = ['name', 'sku', 'category', 'quantity', 'price', 'description', 'supplier'];
+      const fields = ['name', 'sku', 'category', 'quantity', 'minStock', 'price', 'description', 'supplier'];
       fields.forEach(field => setValue(field, productToEdit[field]));
     } else {
       reset();
@@ -57,14 +60,14 @@ const ProductModal = ({ isOpen, onClose, productToEdit, onSuccess }) => {
     <AnimatePresence>
       {isOpen && (
         <>
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40"
           />
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -87,6 +90,7 @@ const ProductModal = ({ isOpen, onClose, productToEdit, onSuccess }) => {
                   <Input label="Category" placeholder="e.g. Electronics" error={errors.category} {...register('category')} />
                   <Input label="Supplier" placeholder="e.g. Tech Corp" error={errors.supplier} {...register('supplier')} />
                   <Input label="Quantity" type="number" placeholder="0" error={errors.quantity} {...register('quantity')} />
+                  <Input label="Minimum Stock" type="number" placeholder="0" error={errors.minStock} {...register('minStock')} />
                   <Input label="Price ($)" type="number" step="0.01" placeholder="0.00" error={errors.price} {...register('price')} />
                 </div>
                 
@@ -107,7 +111,7 @@ const ProductModal = ({ isOpen, onClose, productToEdit, onSuccess }) => {
                 </div>
               </form>
             </div>
-          </motion.div>
+          </MotionDiv>
         </>
       )}
     </AnimatePresence>

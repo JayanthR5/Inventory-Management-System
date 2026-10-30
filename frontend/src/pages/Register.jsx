@@ -11,6 +11,8 @@ import { useAuth } from '../context/AuthContext';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 
+const MotionDiv = motion.div;
+
 /* =======================
    Validation Schema
 ======================= */
@@ -43,8 +45,7 @@ const Register = () => {
       await registerAction(
         data.name,
         data.email,
-        data.password,
-        'admin' // ✅ auto-assigned role
+        data.password
       );
 
       toast.success('Account created successfully!');
@@ -65,7 +66,7 @@ const Register = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-brand-600 to-brand-900 opacity-90" />
 
         <div className="relative z-10 text-white p-12 text-center">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -76,7 +77,7 @@ const Register = () => {
               Create an account to start managing your inventory and tracking
               stock movements.
             </p>
-          </motion.div>
+          </MotionDiv>
         </div>
 
         <div className="absolute -top-20 -left-20 w-64 h-64 bg-brand-500 rounded-full blur-xl opacity-30 animate-blob" />
@@ -85,7 +86,7 @@ const Register = () => {
 
       {/* Right Side */}
       <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
@@ -149,7 +150,7 @@ const Register = () => {
               </p>
             </form>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
     </div>
   );

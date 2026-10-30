@@ -20,7 +20,9 @@ const userSchema = new Schema({
        type: String,
        enum: ["staff", "admin"],
        default: "staff"
-   }
+   },
+   resetPasswordToken: String,
+   resetPasswordExpire: Date
 },{timestamps: true});
 
 // Export the model 

@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
           } else {
             authService.logout();
           }
-        } catch (error) {
+        } catch {
           authService.logout();
         }
       }
@@ -32,8 +32,8 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-  const registerUser = async (name, email, password, role) => {
-    const data = await authService.register(name, email, password, role);
+  const registerUser = async (name, email, password) => {
+    const data = await authService.register(name, email, password);
     setUser(data.user);
     return data;
   };
@@ -50,4 +50,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);

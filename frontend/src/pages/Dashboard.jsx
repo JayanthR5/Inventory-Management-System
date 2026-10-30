@@ -44,7 +44,7 @@ const Dashboard = () => {
 
         // Use backend summary data
         setStats({
-          totalProducts: summary?.totalProducts ?? productList.length,
+          totalProducts: summary?.totalProducts ?? products.length,
           totalValue: summary?.totalStoreValue ?? 0,
           lowStock: summary?.lowStockCount ?? 0,
           movements: historyList.slice(0, 5),

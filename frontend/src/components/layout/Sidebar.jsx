@@ -15,6 +15,8 @@ import { clsx } from 'clsx';
 import { useAuth } from '../../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const MotionDiv = motion.div;
+
 const Sidebar = ({ isOpen, onClose }) => {
   const { user, logout } = useAuth();
   
@@ -98,14 +100,14 @@ const Sidebar = ({ isOpen, onClose }) => {
       <AnimatePresence>
         {isOpen && (
           <>
-            <motion.div
+            <MotionDiv
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={onClose}
               className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40 lg:hidden"
             />
-            <motion.div
+            <MotionDiv
               initial={{ x: -280 }}
               animate={{ x: 0 }}
               exit={{ x: -280 }}
@@ -113,7 +115,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               className="fixed inset-y-0 left-0 w-72 bg-white z-50 lg:hidden shadow-2xl"
             >
               {sidebarContent}
-            </motion.div>
+            </MotionDiv>
           </>
         )}
       </AnimatePresence>

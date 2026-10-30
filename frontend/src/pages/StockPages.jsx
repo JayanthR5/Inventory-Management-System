@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUpCircle, ArrowDownCircle, History } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import { format } from 'date-fns'; // Need to add date-fns if not present, or use native Date
 
 import stockService from '../services/stockService';
 import StockModal from '../components/stock/StockModal';
@@ -9,7 +8,6 @@ import StockModal from '../components/stock/StockModal';
 const StockPages = ({ type }) => { // type: 'IN' | 'OUT' | 'HISTORY'
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setModalOpen] = useState(true); // Open automatically for In/Out pages? Maybe not suitable.
   // Actually, specs say "Pages: Stock in form, Stock out form, Stock history table".
   // A cleaner approach: One Stock Management page with tabs or separate routes.
   // Given separate sidebar links provided in Phase 2 sidebar, I'll make wrapper components.

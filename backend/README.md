@@ -17,9 +17,9 @@ This is the RESTful API for the Inventory Management System, powered by Node.js,
 ### 🔐 Authentication
 | Method | Endpoint | Description | Access |
 | :--- | :--- | :--- | :--- |
-| POST | `/api/users/register` | Register a new user | Public |
-| POST | `/api/users/login` | Login and get token | Public |
-| GET | `/api/users/me` | Get current user profile | Private |
+| POST | `/api/auth/register` | Register a new user; the first account is admin and later accounts are staff | Public |
+| POST | `/api/auth/login` | Login and get token | Public |
+| GET | `/api/auth/me` | Get current user profile | Private |
 
 ### 📦 Products
 | Method | Endpoint | Description | Access |
@@ -34,15 +34,17 @@ This is the RESTful API for the Inventory Management System, powered by Node.js,
 ### 🔄 Stock Movements
 | Method | Endpoint | Description | Access |
 | :--- | :--- | :--- | :--- |
-| GET | `/api/stocks` | Get all movements | Private |
-| POST | `/api/stocks` | Record movement (IN/OUT) | Private |
+| GET | `/api/stock/history` | Get all movements | Private |
+| POST | `/api/stock/in` | Record stock in | Private |
+| POST | `/api/stock/out` | Record stock out | Private |
 
 ### 📊 Reports & Exports
 | Method | Endpoint | Description | Access |
 | :--- | :--- | :--- | :--- |
-| GET | `/api/reports/stats` | Get dashboard stats | Private |
-| GET | `/api/export/excel` | Export products to Excel | Private |
-| GET | `/api/export/pdf` | Export products to PDF | Private |
+| GET | `/api/reports/summary` | Get dashboard stats | Private |
+| GET | `/api/reports/stock-movement` | Get stock movement stats | Private |
+| GET | `/api/export/products/excel` | Export products to Excel | Private |
+| GET | `/api/export/products/pdf` | Export products to PDF | Private |
 
 ---
 
@@ -50,7 +52,13 @@ This is the RESTful API for the Inventory Management System, powered by Node.js,
 
 1. Navigate to directory: `cd backend`
 2. Install dependencies: `npm install`
-3. Configure environment:
+3. Start local Redis on Windows before starting the API:
+   ```powershell
+   Get-Service Redis
+   Start-Service Redis
+   ```
+   If Redis is not installed as a service, run `redis-server` in a separate terminal.
+4. Configure environment:
    - Create a `.env` file in the root of the `backend` folder.
    - Add the following:
      ```env
@@ -58,8 +66,35 @@ This is the RESTful API for the Inventory Management System, powered by Node.js,
      MONGO_URI=your_mongodb_connection_string
      JWT_SECRET=your_super_secret_key
      NODE_ENV=development
+     REDIS_URL=redis://localhost:6379
+     REDIS_CACHE_TTL_SECONDS=60
      ```
-4. Start development server: `npm run dev`
+5. Start development server: `npm run dev`
+
+Product and low-stock list responses are cached per authenticated user in Redis.
+MongoDB remains the source of truth; successful product and stock mutations
+invalidate that user's product caches. Redis failures are logged and do not
+prevent MongoDB-backed requests or writes from completing.
+
+The first public registration becomes the initial `admin`; later public
+registrations create `staff` accounts. To promote an existing account, run this
+from the `backend` directory:
+
+```powershell
+npm run promote-admin -- user@example.com
+```
+
+Stock-in and stock-out quantity changes use conditional atomic MongoDB updates
+to prevent negative inventory and lost updates during concurrent requests.
+
+Run the cache behavior tests with:
+
+```powershell
+npm test
+```
+
+These tests isolate MongoDB and Redis at the controller boundary, so they do
+not require Atlas credentials or modify live data.
 
 ---
 

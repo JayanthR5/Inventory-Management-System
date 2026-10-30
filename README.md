@@ -35,6 +35,7 @@ A premium, state-of-the-art Inventory Management System built with the MERN stac
 - **Database**: MongoDB (Mongoose)
 - **Security**: JWT, Bcrypt, Helmet, Express Rate Limit
 - **File Handling**: PDFKit, XLSX
+- **Caching**: Redis for user-scoped product and low-stock reads
 
 ---
 
@@ -63,22 +64,36 @@ A premium, state-of-the-art Inventory Management System built with the MERN stac
 ### Prerequisites
 - Node.js (v18+)
 - MongoDB Atlas or Local Instance
+- Redis running locally on `localhost:6379`
 
 ### Backend Setup
 1. `cd backend`
 2. `npm install`
-3. Create `.env` from template:
+3. Start Redis before starting the API. For a Redis Windows service, use:
+   ```powershell
+   Get-Service Redis
+   Start-Service Redis
+   ```
+   If Redis is installed as a command instead, run `redis-server` in a separate terminal.
+4. Create `.env` from template:
    ```env
    PORT=5000
    MONGO_URI=your_mongodb_uri
    JWT_SECRET=your_secret_key
+   REDIS_URL=redis://localhost:6379
+   REDIS_CACHE_TTL_SECONDS=60
    ```
-4. `npm run dev`
+5. `npm run dev`
 
 ### Frontend Setup
 1. `cd frontend`
 2. `npm install`
 3. `npm run dev`
+
+### Verification
+
+From `backend`, run `npm test`. The API health check is available at
+`http://localhost:5000/`, and the frontend runs at `http://localhost:5173/`.
 
 ---
 
@@ -143,5 +158,3 @@ A premium, state-of-the-art Inventory Management System built with the MERN stac
 
 
 ---
-
-

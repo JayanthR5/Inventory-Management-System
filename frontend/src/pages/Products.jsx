@@ -42,7 +42,7 @@ const Products = () => {
         await productService.delete(id);
         toast.success('Product deleted');
         fetchProducts();
-      } catch (error) {
+      } catch {
         toast.error('Failed to delete product');
       }
     }

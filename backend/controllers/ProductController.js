@@ -1,6 +1,11 @@
 const asyncHandler = require("../utils/AsyncHandler");
 const Product = require("../models/ProductModel");
 const StockHistory = require("../models/StockHistoryModel");
+const {
+    getCachedJson,
+    setCachedJson,
+    invalidateUserProductCaches
+} = require("../redis");
 
 // @desc    Create a product
 // @route   POST /api/products
@@ -26,6 +31,8 @@ const createProduct = asyncHandler(async (req, res) => {
         supplier,
     });
 
+    await invalidateUserProductCaches(req.user.id);
+
     // Log initial stock as IN if quantity > 0
     if (quantity > 0) {
         await StockHistory.create({
@@ -44,7 +51,15 @@ const createProduct = asyncHandler(async (req, res) => {
 // @route   GET /api/products
 // @access  Private
 const getProducts = asyncHandler(async (req, res) => {
+    const cacheKey = `products:user:${req.user.id}`;
+    const cachedProducts = await getCachedJson(cacheKey);
+    if (cachedProducts) {
+        res.status(200).json(cachedProducts);
+        return;
+    }
+
     const products = await Product.find({ user: req.user.id }).sort("-createdAt");
+    await setCachedJson(cacheKey, products);
     res.status(200).json(products);
 });
 
@@ -109,6 +124,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     }
 
     const updatedProduct = await product.save();
+    await invalidateUserProductCaches(req.user.id);
     res.status(200).json(updatedProduct);
 });
 
@@ -124,6 +140,8 @@ const deleteProduct = asyncHandler(async (req, res) => {
     
     // Use deleteOne() instead of remove() which is deprecated
     await product.deleteOne();
+    await invalidateUserProductCaches(req.user.id);
+
     // Also remove history for this product
     await StockHistory.deleteMany({ productId: req.params.id, user: req.user.id });
 
@@ -141,14 +159,17 @@ const stockIn = asyncHandler(async (req, res) => {
         throw new Error("Invalid quantity");
     }
 
-    const product = await Product.findOne({ _id: productId, user: req.user.id });
+    const product = await Product.findOneAndUpdate(
+        { _id: productId, user: req.user.id },
+        { $inc: { quantity: Number(quantity) } },
+        { new: true, runValidators: true }
+    );
     if (!product) {
         res.status(404);
         throw new Error("Product not found in your inventory");
     }
 
-    product.quantity += Number(quantity);
-    await product.save();
+    await invalidateUserProductCaches(req.user.id);
 
     await StockHistory.create({
         user: req.user.id,
@@ -178,13 +199,21 @@ const stockOut = asyncHandler(async (req, res) => {
         throw new Error("Product not found in your inventory");
     }
 
-    if (product.quantity < quantity) {
+    const updatedProduct = await Product.findOneAndUpdate(
+        {
+            _id: productId,
+            user: req.user.id,
+            quantity: { $gte: Number(quantity) }
+        },
+        { $inc: { quantity: -Number(quantity) } },
+        { new: true, runValidators: true }
+    );
+    if (!updatedProduct) {
         res.status(400);
         throw new Error("Insufficient stock");
     }
 
-    product.quantity -= Number(quantity);
-    await product.save();
+    await invalidateUserProductCaches(req.user.id);
 
     await StockHistory.create({
         user: req.user.id,
@@ -194,7 +223,7 @@ const stockOut = asyncHandler(async (req, res) => {
         reason,
     });
 
-    res.status(200).json({ message: "Stock Out successful", currentQuantity: product.quantity });
+    res.status(200).json({ message: "Stock Out successful", currentQuantity: updatedProduct.quantity });
 });
 
 // @desc    Get Stock History
@@ -219,6 +248,13 @@ const getStockHistory = asyncHandler(async (req, res) => {
 // @route   GET /api/products/low-stock
 // @access  Private
 const getLowStockProducts = asyncHandler(async (req, res) => {
+    const cacheKey = `low-stock:user:${req.user.id}`;
+    const cachedProducts = await getCachedJson(cacheKey);
+    if (cachedProducts) {
+        res.status(200).json(cachedProducts);
+        return;
+    }
+
     // Find products where quantity is low (<= 10) OR less than or equal to custom minStock
     const products = await Product.find({
         user: req.user.id,
@@ -228,6 +264,7 @@ const getLowStockProducts = asyncHandler(async (req, res) => {
         ]
     }).sort("quantity");
 
+    await setCachedJson(cacheKey, products);
     res.status(200).json(products);
 });
 

@@ -1,10 +1,7 @@
 import React from 'react';
 import { Menu, Bell, Search } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
 
 const Navbar = ({ onMenuClick }) => {
-  const { user } = useAuth();
-  
   return (
     <header className="bg-white border-b border-gray-200 h-16 fixed top-0 right-0 left-0 lg:left-64 z-30 flex items-center justify-between px-4 lg:px-8">
       <div className="flex items-center gap-4">

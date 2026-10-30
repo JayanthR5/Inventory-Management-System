@@ -11,6 +11,8 @@ import { useAuth } from '../context/AuthContext';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 
+const MotionDiv = motion.div;
+
 const schema = yup.object({
   email: yup.string().email('Invalid email address').required('Email is required'),
   password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
@@ -44,7 +46,7 @@ const Login = () => {
       <div className="hidden lg:flex lg:w-1/2 bg-brand-900 relative overflow-hidden items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-br from-brand-600 to-brand-900 opacity-90"></div>
         <div className="relative z-10 text-white p-12 text-center">
-            <motion.div
+            <MotionDiv
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
@@ -54,7 +56,7 @@ const Login = () => {
                 <p className="text-xl text-brand-100 max-w-md mx-auto">
                     Streamline your stock, manage products, and track real-time analytics with ease.
                 </p>
-            </motion.div>
+            </MotionDiv>
         </div>
         
         {/* Decorative Circles */}
@@ -64,8 +66,7 @@ const Login = () => {
 
       {/* Right Side - Form */}
       <div className="flex-1 flex items-center justify-center p-8">
-        <motion.div 
-            initial={{ opacity: 0, x: 20 }}
+        <MotionDiv initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             className="w-full max-w-md"
@@ -105,9 +106,9 @@ const Login = () => {
                   </label>
                 </div>
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-brand-600 hover:text-brand-500">
+                  <Link to="/forgot-password" name="forgot-password-link" className="font-medium text-brand-600 hover:text-brand-500">
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
 
@@ -128,7 +129,7 @@ const Login = () => {
               </p>
             </form>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
     </div>
   );
